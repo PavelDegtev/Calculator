@@ -22,7 +22,8 @@ public class Calculator {
             boolean check = checkCorrectInput(input);
             if (!check) {
                 System.out.println("Not correct input!");
-                exit(1);
+                throw (new Exception("Not correct input"));
+                //exit(1);
             }
             String answer = calc(input);
             System.out.println("RESULT: " + answer);
@@ -34,14 +35,6 @@ public class Calculator {
         System.out.print("Enter a mathematical expression (or \"exit\" to quit) :");
         Scanner console = new Scanner(System.in);
         s = console.nextLine();
-       /* try (InputStreamReader ir = new InputStreamReader(System.in);
-
-             BufferedReader br = new BufferedReader(ir)) {
-            System.out.print("Enter a mathematical expression: ");
-            s = br.readLine();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }*/
         return s;
     }
 
@@ -70,13 +63,16 @@ public class Calculator {
             }
             String reg = "([\\+|\\*|\\-|/])";
             String[] digs = input.split(reg);
-            String sign = input.substring(input.indexOf(digs[0]) + (digs[0].equals("10") ? 2 : 1), input.indexOf(digs[0]) + (digs[0].equals("10") ? 3 : 2));
+            String sign = input.substring(input.indexOf(digs[0]) + digs[0].length(), input.indexOf(digs[0]) + digs[0].length() +1);
             System.out.println("first sign is: " + firstSign);
             System.out.println(Arrays.toString(digs));
             System.out.println(sign);
 
             int a = Integer.parseInt(digs[0]);
             int b = Integer.parseInt(digs[1]);
+            if(a > 10 || b > 10) {
+                throw(new Exception("Both or one parameter is more than 10!"));
+            }
             int firstSignInt = (firstSign.equals("-") ? -1 : 1);
             switch (sign) {
                 case "+":
@@ -140,7 +136,7 @@ public class Calculator {
     }
 
 
-    /*Finded in  internet*/
+    /*Взято из интернета*/
     public static String arabicToRoman(int number) {
         if (number < 0 || number > 3999) {
             return "This number cannot be converted";
